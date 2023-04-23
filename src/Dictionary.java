@@ -1,7 +1,6 @@
-import java.io.FileInputStream;
-import java.io.FileReader;
+import java.io.*;
 
-public class Codes {
+public class Dictionary {
     private char[] symbols;
     private int[] codesLength;
     private long[] codes;
@@ -9,7 +8,14 @@ public class Codes {
     private int wholeBytesInFile;
     private int freeBits;
 
-    public void readCodes(FileInputStream fileInput){
+    public void readCodes(File input) throws IOException {
+        BufferedReader reader = new BufferedReader(new FileReader(input));
+        String textLine = reader.readLine();
+        wholeBytesInFile = textLine.indexOf(0);
+        String[] s = textLine.split(" ");
+        wholeBytesInFile = Integer.parseInt(s[0]);
+        freeBits = Integer.parseInt(s[1]);
+        System.out.println(wholeBytesInFile + " " + freeBits);
     }
 
     public String toString(){
