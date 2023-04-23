@@ -1,4 +1,5 @@
 import java.io.*;
+import java.math.BigInteger;
 
 public class Dictionary {
     private char[] symbols;
@@ -8,14 +9,29 @@ public class Dictionary {
     private int wholeBytesInFile;
     private int freeBits;
 
+    public Dictionary(){
+        symbols = new char[256];
+        codesLength = new int[256];
+        codes = new long[256];
+    }
+
     public void readCodes(File input) throws IOException {
         BufferedReader reader = new BufferedReader(new FileReader(input));
+
         String textLine = reader.readLine();
-        wholeBytesInFile = textLine.indexOf(0);
-        String[] s = textLine.split(" ");
-        wholeBytesInFile = Integer.parseInt(s[0]);
-        freeBits = Integer.parseInt(s[1]);
-        System.out.println(wholeBytesInFile + " " + freeBits);
+        String[] firstLine = textLine.split(" ");
+        wholeBytesInFile = Integer.parseInt(firstLine[0]);
+        freeBits = Integer.parseInt(firstLine[1]);
+
+        textLine = reader.readLine();
+        while(textLine != null){
+            symbols[codesNum] = textLine.charAt(0);
+            String code = textLine.substring(2);
+            BigInteger bigInteger = new BigInteger(code, 2);
+            codes[codesNum] = bigInteger.longValue();
+            codesLength[codesNum++] = code.length();
+            textLine = reader.readLine();
+        }
     }
 
     public String toString(){
@@ -32,6 +48,7 @@ public class Dictionary {
         return result.toString();
     }
 
+    //TODO not working
     private String printBinary(long code, int length){
         StringBuilder result = new StringBuilder();
         int start = (length % 8 == 0) ? length : ((length / 8) * 8 + 8);
