@@ -3,12 +3,15 @@ import java.io.File;
 public class Main{
     public static void main(String[] args){
         Dictionary dictionary = new Dictionary();
-        File file = new File("src/code.txt");
+        File dictFile = new File("src/code.txt");
+        File binFile = new File("src/output.bin");
         try{
-            dictionary.readCodes(file);
+            dictionary.readCodes(dictFile);
+            System.out.println(dictionary);
+            FileDecompressor decompressor = new FileDecompressor(dictionary);
+            decompressor.decompress(binFile);
         } catch(Exception e) {
             e.printStackTrace();
         }
-        System.out.println(dictionary);
     }
 }

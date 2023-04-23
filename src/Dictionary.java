@@ -35,6 +35,7 @@ public class Dictionary {
             codesLength[codesNum++] = code.length();
             textLine = reader.readLine();
         }
+        reader.close();
     }
 
     public String toString(){
@@ -60,5 +61,9 @@ public class Dictionary {
                 result.append("0");
         }
         return result.toString();
+    }
+
+    public int getFileLengthInBytes(){
+        return freeBits==0 ? wholeBytesInFile : wholeBytesInFile+1;
     }
 }
