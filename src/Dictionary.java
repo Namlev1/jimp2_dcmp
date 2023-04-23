@@ -19,6 +19,9 @@ public class Dictionary {
         BufferedReader reader = new BufferedReader(new FileReader(input));
 
         String textLine = reader.readLine();
+        if(textLine == null)
+            throw new IOException("Empty file");
+
         String[] firstLine = textLine.split(" ");
         wholeBytesInFile = Integer.parseInt(firstLine[0]);
         freeBits = Integer.parseInt(firstLine[1]);
@@ -48,16 +51,13 @@ public class Dictionary {
         return result.toString();
     }
 
-    //TODO not working
     private String printBinary(long code, int length){
         StringBuilder result = new StringBuilder();
-        int start = (length % 8 == 0) ? length : ((length / 8) * 8 + 8);
-        for (int i = start - 1; i >= (start - length) ; i--) {
-            if ((code & (1L << i)) != 0) {
+        for(int i = length-1; i >= 0; i--){
+            if ((code & (1L << i)) != 0)
                 result.append("1");
-            } else {
+            else
                 result.append("0");
-            }
         }
         return result.toString();
     }
