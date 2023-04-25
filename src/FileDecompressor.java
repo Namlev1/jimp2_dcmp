@@ -1,7 +1,7 @@
 import java.io.*;
 
 public class FileDecompressor {
-    private Dictionary dictionary;
+    private final Dictionary dictionary;
 
     public FileDecompressor(Dictionary dictionary){
         this.dictionary = dictionary;
@@ -10,13 +10,26 @@ public class FileDecompressor {
     public void decompress(File input) throws IOException {
         InputStream inputStream = new FileInputStream(input);
         Writer fileWriter = makeOutputWriter(input);
-        int byteNum = dictionary.getFileLengthInBytes();
 
-        for(int i = 0; i < byteNum; i++){
-            long currentByte = inputStream.read();
+        int bytesInFile = dictionary.getFileLengthInBytes();
+        Integer bitsNumber = 0;
 
+        for(int i = 0; i < bytesInFile; i++){
+            Long currentByte = (long) inputStream.read();
+            bitsNumber += 8;
+            while(bitsNumber > 0){
+                char symbol = dictionary.findSymbol(currentByte, bitsNumber);
+                if(symbol != 0)
+                    fileWriter.append(symbol);
+                else
+                    break;
+            }
+            if(i == bytesInFile-1 && bitsNumber == dictionary.getFreeBits()){
+                break;
+            }
         }
-
+        fileWriter.flush();
+        fileWriter.close();
         inputStream.close();
     }
 
