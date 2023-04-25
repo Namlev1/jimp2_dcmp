@@ -3,7 +3,7 @@ import java.io.File;
 public class Main{
     public static void main(String[] args){
         Dictionary dictionary = new Dictionary();
-        // w moim IDE trzeba dać taką ścieżkę, możliwe że u was trzeba dać inną
+        // w moim IDE trzeba dać taką ścieżkę, możliwe że u was trzeba dać innną
         File dictFile = new File("src/code.txt");
         File binFile = new File("src/output.bin");
         try{
