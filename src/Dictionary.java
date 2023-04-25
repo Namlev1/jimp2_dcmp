@@ -2,22 +2,13 @@ import java.io.*;
 import java.math.BigInteger;
 
 public class Dictionary {
-    private char[] symbols;
-    private int[] codeLength;
-    private long[] codes;
+    private final Symbol[] symbols;
     private int codesNum;
     private int wholeBytesInFile;
-
-    public int getFreeBits() {
-        return freeBits;
-    }
-
     private int freeBits;
 
     public Dictionary(){
-        symbols = new char[256];
-        codeLength = new int[256];
-        codes = new long[256];
+        symbols = new Symbol[256];
     }
 
     public void readCodes(File input) throws IOException {
@@ -33,11 +24,18 @@ public class Dictionary {
 
         textLine = reader.readLine();
         while(textLine != null){
-            symbols[codesNum] = textLine.charAt(0);
+//            symbols[codesNum] = textLine.charAt(0);
+//            String code = textLine.substring(2);
+//            BigInteger bigInteger = new BigInteger(code, 2);
+//            codes[codesNum] = bigInteger.longValue();
+//            codeLength[codesNum++] = code.length();
+
+            char c = textLine.charAt(0);
             String code = textLine.substring(2);
             BigInteger bigInteger = new BigInteger(code, 2);
-            codes[codesNum] = bigInteger.longValue();
-            codeLength[codesNum++] = code.length();
+            symbols[codesNum++] = new Symbol(c, code.length(), bigInteger.longValue());
+
+
             textLine = reader.readLine();
         }
         reader.close();
@@ -54,18 +52,14 @@ public class Dictionary {
         return result.toString();
     }
 
-    public int getFileLengthInBytes(){
-        return freeBits==0 ? wholeBytesInFile : wholeBytesInFile+1;
-    }
-
     public Symbol findSymbol(long readByte, int bitsNum){
         for(int i = 0; i < codesNum; i++){
-            if(bitsNum >= codeLength[i]){
-                int move = bitsNum - codeLength[i];
+            if(bitsNum >= symbols[i].getLength()){
+                int move = bitsNum - symbols[i].getLength();
                 long byteTmp = readByte >> move;
-                if(byteTmp == codes[i]) {
-                    moveByte(readByte, bitsNum);
-                    return new Symbol(symbols[i], codeLength[i]);
+                if(byteTmp == symbols[i].getByteCode()) {
+//                    moveByte(readByte, bitsNum);
+                    return symbols[i];
                 }
             }
 
@@ -73,10 +67,19 @@ public class Dictionary {
         return null;
     }
 
-    public void moveByte(Long readByte, Integer bits){
+    public static long moveByte(long readByte, int bits){
         int move = 8 - bits;
-        readByte = readByte << move;
-        readByte = readByte & 0x11111111;
+        long newByte = readByte << move;
+        newByte = readByte & 0x11111111;
+        return newByte;
+    }
+
+    public int getFileLengthInBytes(){
+        return freeBits==0 ? wholeBytesInFile : wholeBytesInFile+1;
+    }
+
+    public int getFreeBits() {
+        return freeBits;
     }
 
     public String toString(){
@@ -87,8 +90,8 @@ public class Dictionary {
         result.append("Codes:");
         for(int i = 0; i < codesNum; i++){
             result.append("\n");
-            result.append(symbols[i]).append(" ");
-            result.append(printBinary(codes[i], codeLength[i]));
+            result.append(symbols[i].getCharacter()).append(" ");
+            result.append(printBinary(symbols[i].getByteCode(), symbols[i].getLength()));
         }
         return result.toString();
     }

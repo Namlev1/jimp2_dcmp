@@ -23,6 +23,7 @@ public class FileDecompressor {
                 if(symbol != null) {
                     fileWriter.append(symbol.getCharacter());
                     bitsNumber -= symbol.getLength();
+                    currentByte = Dictionary.moveByte(currentByte, bitsNumber);
                 }
                 else
                     break;
