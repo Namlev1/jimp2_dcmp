@@ -12,15 +12,18 @@ public class FileDecompressor {
         Writer fileWriter = makeOutputWriter(input);
 
         int bytesInFile = dictionary.getFileLengthInBytes();
-        Integer bitsNumber = 0;
+        int bitsNumber = 0;
+        long currentByte = 0L;
 
         for(int i = 0; i < bytesInFile; i++){
-            Long currentByte = (long) inputStream.read();
+            currentByte +=  inputStream.read();
             bitsNumber += 8;
             while(bitsNumber > 0){
-                char symbol = dictionary.findSymbol(currentByte, bitsNumber);
-                if(symbol != 0)
-                    fileWriter.append(symbol);
+                Symbol symbol = dictionary.findSymbol(currentByte, bitsNumber);
+                if(symbol != null) {
+                    fileWriter.append(symbol.getCharacter());
+                    bitsNumber -= symbol.getLength();
+                }
                 else
                     break;
             }

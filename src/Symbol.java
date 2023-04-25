@@ -1,14 +1,14 @@
 public class Symbol {
-    private final char sybmol;
+    private final char character;
     private final int length;
 
-    public Symbol(char sybmol, int length) {
-        this.sybmol = sybmol;
+    public Symbol(char character, int length) {
+        this.character = character;
         this.length = length;
     }
 
-    public char getSybmol() {
-        return sybmol;
+    public char getCharacter() {
+        return character;
     }
 
     public int getLength() {

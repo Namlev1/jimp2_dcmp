@@ -58,21 +58,19 @@ public class Dictionary {
         return freeBits==0 ? wholeBytesInFile : wholeBytesInFile+1;
     }
 
-//TODO
-    public char findSymbol(long readByte, Integer bitsNum){
+    public Symbol findSymbol(long readByte, int bitsNum){
         for(int i = 0; i < codesNum; i++){
             if(bitsNum >= codeLength[i]){
                 int move = bitsNum - codeLength[i];
                 long byteTmp = readByte >> move;
                 if(byteTmp == codes[i]) {
-                    bitsNum = Integer.valueOf(codeLength[i]);
                     moveByte(readByte, bitsNum);
-                    return symbols[i];
+                    return new Symbol(symbols[i], codeLength[i]);
                 }
             }
 
         }
-        return 0;
+        return null;
     }
 
     public void moveByte(Long readByte, Integer bits){
