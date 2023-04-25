@@ -20,7 +20,7 @@ public class Dictionary {
 
         String[] firstLine = textLine.split(" ");
         wholeBytesInFile = Integer.parseInt(firstLine[0]);
-        freeBits = Integer.parseInt(firstLine[1]);
+        freeBits = 8-Integer.parseInt(firstLine[1]);
 
         textLine = reader.readLine();
         while(textLine != null){
@@ -55,7 +55,11 @@ public class Dictionary {
     public Symbol findSymbol(long readByte, int bitsNum){
         for(int i = 0; i < codesNum; i++){
             if(bitsNum >= symbols[i].getLength()){
-                int move = bitsNum - symbols[i].getLength();
+                int move;
+                if(bitsNum <= 8)
+                    move = 8 - symbols[i].getLength();
+                else
+                    move = bitsNum - symbols[i].getLength();
                 long byteTmp = readByte >> move;
                 if(byteTmp == symbols[i].getByteCode()) {
 //                    moveByte(readByte, bitsNum);
@@ -65,13 +69,6 @@ public class Dictionary {
 
         }
         return null;
-    }
-
-    public static long moveByte(long readByte, int bits){
-        int move = 8 - bits;
-        long newByte = readByte << move;
-        newByte = readByte & 0x11111111;
-        return newByte;
     }
 
     public int getFileLengthInBytes(){

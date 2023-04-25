@@ -22,14 +22,16 @@ public class FileDecompressor {
                 Symbol symbol = dictionary.findSymbol(currentByte, bitsNumber);
                 if(symbol != null) {
                     fileWriter.append(symbol.getCharacter());
+                    currentByte = moveByte(currentByte, bitsNumber, symbol.getLength());
                     bitsNumber -= symbol.getLength();
-                    currentByte = Dictionary.moveByte(currentByte, bitsNumber);
                 }
-                else
+                else {
+                    currentByte = currentByte << bitsNumber;
                     break;
-            }
-            if(i == bytesInFile-1 && bitsNumber == dictionary.getFreeBits()){
-                break;
+                }
+                if(i == bytesInFile-1 && bitsNumber == dictionary.getFreeBits()){
+                    break;
+                }
             }
         }
         fileWriter.flush();
@@ -37,8 +39,18 @@ public class FileDecompressor {
         inputStream.close();
     }
 
-    private long makeMask(int n, int byteNum) {
-        return (1L << (8-n*byteNum)) - 1;
+    //TODO debug
+    public long moveByte(long readByte, int bits, int b){
+//        int move = 8 - bits;
+        int move;
+        if(bits <= 8)
+            move = b;
+        else
+            move = 8 - (bits - b);
+//        long newByte = readByte << move;
+        long newByte = readByte << move;
+        newByte = newByte & 0b11111111;
+        return newByte;
     }
 
     private Writer makeOutputWriter(File input)throws IOException{
