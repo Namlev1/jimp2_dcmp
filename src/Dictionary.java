@@ -24,49 +24,31 @@ public class Dictionary {
 
         textLine = reader.readLine();
         while(textLine != null){
-//            symbols[codesNum] = textLine.charAt(0);
-//            String code = textLine.substring(2);
-//            BigInteger bigInteger = new BigInteger(code, 2);
-//            codes[codesNum] = bigInteger.longValue();
-//            codeLength[codesNum++] = code.length();
-
             char c = textLine.charAt(0);
             String code = textLine.substring(2);
             BigInteger bigInteger = new BigInteger(code, 2);
             symbols[codesNum++] = new Symbol(c, code.length(), bigInteger.longValue());
-
 
             textLine = reader.readLine();
         }
         reader.close();
     }
 
-    private String printBinary(long code, int length){
-        StringBuilder result = new StringBuilder();
-        for(int i = length-1; i >= 0; i--){
-            if ((code & (1L << i)) != 0)
-                result.append("1");
-            else
-                result.append("0");
-        }
-        return result.toString();
-    }
-
     public Symbol findSymbol(long readByte, int bitsNum){
         for(int i = 0; i < codesNum; i++){
             if(bitsNum >= symbols[i].getLength()){
+
                 int move;
                 if(bitsNum <= 8)
                     move = 8 - symbols[i].getLength();
                 else
                     move = bitsNum - symbols[i].getLength();
+
                 long byteTmp = readByte >> move;
-                if(byteTmp == symbols[i].getByteCode()) {
-//                    moveByte(readByte, bitsNum);
+                if(byteTmp == symbols[i].getCodeInBytes()) {
                     return symbols[i];
                 }
             }
-
         }
         return null;
     }
@@ -86,9 +68,8 @@ public class Dictionary {
         StringBuilder result = new StringBuilder();
         result.append("Codes:");
         for(int i = 0; i < codesNum; i++){
-            result.append("\n");
-            result.append(symbols[i].getCharacter()).append(" ");
-            result.append(printBinary(symbols[i].getByteCode(), symbols[i].getLength()));
+            result.append(System.lineSeparator())
+                    .append(symbols[i].toString());
         }
         return result.toString();
     }
