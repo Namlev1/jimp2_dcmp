@@ -8,7 +8,7 @@ void code_reverse();
 void write_bits_to_file(FILE* in, const char* binary_string);
 
 
-const int N = 256;
+#define N 256
 unsigned int counters[N] = {0};
 char code[N][N] = {""};
 size_t length;
