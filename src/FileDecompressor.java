@@ -22,7 +22,6 @@ public class FileDecompressor {
 
         decompressToFile(inputStream, outputWriter);
 
-        outputWriter.flush();
         outputWriter.close();
         inputStream.close();
     }
@@ -40,7 +39,7 @@ public class FileDecompressor {
                 Symbol symbol = dictionary.findSymbol(currentByte, bitsNumber);
                 if(symbol != null) {
                     outputWriter.append(symbol.getCharacter());
-                    currentByte = moveByte(currentByte, bitsNumber, symbol.getLength());
+                    currentByte = shiftByte(currentByte, bitsNumber, symbol.getLength());
                     bitsNumber -= symbol.getLength();
                 }
                 else {
@@ -55,14 +54,14 @@ public class FileDecompressor {
         }
     }
 
-    public long moveByte(long readByte, int actualBitsInByte, int codeLength){
-        int move;
+    public long shiftByte(long readByte, int actualBitsInByte, int codeLength){
+        int shift;
         if(actualBitsInByte <= 8)
-            move = codeLength;
+            shift = codeLength;
         else
-            move = 8 - (actualBitsInByte - codeLength);
+            shift = 8 - (actualBitsInByte - codeLength);
 
-        long newByte = readByte << move;
+        long newByte = readByte << shift;
         newByte = newByte & 0b11111111;
         return newByte;
     }
