@@ -1,0 +1,7 @@
+app\App.class
+app\SceneController.class
+module-info.class
+app\Dictionary.class
+app\SecondaryController.class
+app\FileDecompressor.class
+app\Symbol.class
