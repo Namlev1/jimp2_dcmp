@@ -23,6 +23,10 @@ public class Symbol {
         return byteCode;
     }
 
+    public String getCodeInBinaryString() {
+        return printBinary(this.byteCode, this.length);
+    }
+
     public String toString(){
         return character + " " + printBinary(byteCode, length);
     }

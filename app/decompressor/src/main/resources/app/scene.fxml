@@ -1,24 +1,55 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.scene.layout.VBox?>
-<?import javafx.scene.control.Label?>
-<?import javafx.scene.control.Button?>
 <?import javafx.geometry.Insets?>
-<?import javafx.scene.layout.GridPane?>
-
-<VBox fx:id="mainVBox" alignment="CENTER" spacing="20.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="app.SceneController">
-   <children>
-      <Label text="Dekompresor" style="-fx-font-size: 20"/>
-      <GridPane alignment="CENTER" hgap="10" vgap="10">
-         <Button fx:id="codeFileChooserButton" GridPane.columnIndex="0" GridPane.rowIndex="0" text="Wybierz słownik kodów" onAction="#handleFileChooserButtonClicked" style="-fx-background-color: white; -fx-border-color: black; -fx-border-radius: 5px; -fx-min-width: 100px; -fx-min-height: 30px;"/>
-         <Label fx:id="codeFileChooserLabel"   GridPane.columnIndex="0" GridPane.rowIndex="1" style="-fx-font-size: 14; -fx-font-weight: bold;"/>
-         <Button fx:id="encodedFileChooserButton" GridPane.columnIndex="1" GridPane.rowIndex="0" text="Wybierz skompresowany plik" onAction="#handleFileChooserButtonClicked" style="-fx-background-color: white; -fx-border-color: black; -fx-border-radius: 5px; -fx-min-width: 100px; -fx-min-height: 30px;"/>
-         <Label fx:id="encodedFileChooserLabel"   GridPane.columnIndex="1" GridPane.rowIndex="1" style="-fx-font-size: 14; -fx-font-weight: bold;"/>
-      </GridPane>
-      <Button fx:id="decompressButton" text="DEKOMPRESUJ" onAction="#handleDecompressButtonPressed" style="-fx-background-color: green; -fx-border-color: black; -fx-border-radius: 5px; -fx-min-width: 100px; -fx-min-height: 30px;" />
-      <Label fx:id="errorLabel" style="-fx-font-style: italic; -fx-font-size: 12px" visible="false"/>
-   </children>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.collections.FXCollections?>
+<?import java.lang.String?>
+<VBox fx:id="mainVBox" alignment="CENTER" spacing="20.0" xmlns="http://javafx.com/javafx/8.0.171"
+      xmlns:fx="http://javafx.com/fxml/1" fx:controller="app.SceneController">
    <padding>
-      <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
+      <Insets bottom="20.0" left="20.0" right="20.0" top="20.0"/>
    </padding>
+   <ComboBox fx:id="modeSelector" onAction="#handleModeChanged">
+      <items>
+         <FXCollections fx:factory="observableArrayList">
+            <String fx:value="Dekompresor" />
+            <String fx:value="Kompresor" />
+         </FXCollections>
+      </items>
+      <value>
+         <String fx:value="Dekompresor" />
+      </value>
+   </ComboBox>
+   <GridPane alignment="CENTER" hgap="10" vgap="10">
+      <Button fx:id="codeFileChooserButton" GridPane.columnIndex="0" GridPane.rowIndex="0" text="Wybierz słownik kodów"
+              onAction="#handleFileChooserButtonClicked"
+              style="-fx-background-color: white; -fx-border-color: black; -fx-border-radius: 5px; -fx-min-width: 100px; -fx-min-height: 30px;"/>
+      <Label fx:id="codeFileChooserLabel" GridPane.columnIndex="0" GridPane.rowIndex="1"
+             style="-fx-font-size: 14; -fx-font-weight: bold;"/>
+      <Button fx:id="encodedFileChooserButton" GridPane.columnIndex="1" GridPane.rowIndex="0"
+              text="Wybierz skompresowany plik" onAction="#handleFileChooserButtonClicked"
+              style="-fx-background-color: white; -fx-border-color: black; -fx-border-radius: 5px; -fx-min-width: 100px; -fx-min-height: 30px;"/>
+      <Label fx:id="encodedFileChooserLabel" GridPane.columnIndex="1" GridPane.rowIndex="1"
+             style="-fx-font-size: 14; -fx-font-weight: bold;"/>
+   </GridPane>
+   <Button fx:id="mainActionButton" text="START" onAction="#handleMainActionButtonClicked"
+           style="-fx-background-color: green; -fx-border-color: black; -fx-border-radius: 5px; -fx-min-width: 100px; -fx-min-height: 30px;"/>
+   <Label fx:id="errorLabel" style="-fx-font-style: italic; -fx-font-size: 12px" visible="false"/>
+   <VBox fx:id="codeTableContent" alignment="CENTER" visible="false">
+      <GridPane alignment="CENTER">
+         <Label text="Znak" alignment="CENTER"
+                style="-fx-font-size: 14px; -fx-font-weight: bold; -fx-alignment: center;" GridPane.columnIndex="0"
+                GridPane.fillWidth="true"/>
+         <Label text="Kod" alignment="CENTER" style="-fx-font-size: 14px; -fx-font-weight: bold; -fx-alignment: center;"
+                GridPane.columnIndex="1" GridPane.fillWidth="true"/>
+         <columnConstraints>
+            <ColumnConstraints percentWidth="50" hgrow="ALWAYS"/>
+            <ColumnConstraints percentWidth="50" hgrow="ALWAYS"/>
+         </columnConstraints>
+      </GridPane>
+      <ScrollPane fx:id="codeTableScrollPane" prefHeight="75">
+         <VBox fx:id="codeTableVBox"/>
+      </ScrollPane>
+   </VBox>
 </VBox>

@@ -27,7 +27,7 @@ public class TestDecompressor {
 
     }
 
-    private void compressor(String inputFilePath) {
+    public static void compressor(String inputFilePath) {
         try {
             //mozliwe ze trzeba u was zmienic sciezke w cd
             String executeCompressor = "cd tests & compress.exe -i " + inputFilePath + " -o output.bin";
