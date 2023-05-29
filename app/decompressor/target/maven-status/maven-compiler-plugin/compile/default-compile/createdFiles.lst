@@ -1,7 +1,10 @@
 app\App.class
+tests\TestDecompressor.class
+app\CompressorInitializer.class
 app\SceneController.class
 app\DecompressorInitializer.class
 module-info.class
+tests\Main.class
 app\Dictionary.class
 app\FileDecompressor.class
 app\Symbol.class

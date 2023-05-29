@@ -44,21 +44,24 @@ public class SceneController {
         codeFileChooserLabel.getParent().requestLayout();
     }
     @FXML void handleModeChanged(ActionEvent elementCalling) {
+        encodedFile = codeFile = uncompressedFile = null;
         if (!(elementCalling.getSource() instanceof ComboBox))
             return;
+        codeTableContent.setVisible(false);
         encodedFileChooserLabel.setText("");
         codeFileChooserLabel.setText("");
         switch ((String) modeSelector.getValue()) {
             case "Dekompresor":
                 encodedFileChooserButton.setVisible(true);
                 encodedFileChooserButton.setVisible(true);
-                codeFileChooserButton.setText("Wybierz plik wejsciowy");
+                codeFileChooserButton.setText("Wybierz słownik kodów");
 
                 return;
             case "Kompresor":
                 encodedFileChooserButton.setVisible(false);
                 encodedFileChooserButton.setVisible(false);
                 codeFileChooserButton.setText("Wybierz nieskompresowany plik wejściowy");
+
         }
     }
     @FXML
@@ -102,6 +105,7 @@ public class SceneController {
     }
 
     private void displayCodeTable(Dictionary dictionary) {
+        codeTableVBox.getChildren().clear(); // usuwamy wszystkie rzędy z tabeli
         codeTableVBox.setFillWidth(true);
         for (Symbol s : dictionary.getSymbols()) {
             if (!(s == null))
@@ -144,12 +148,15 @@ public class SceneController {
         {
             case "codeFileChooserButton":
                 chosenExtensionFilter = new ExtensionFilter("Słowniki kodów", "*.txt");
+                fileChooser.setTitle("Wybierz plik z kodem");
                 break;
             case "encodedFileChooserButton":
                 chosenExtensionFilter = new ExtensionFilter("Zakodowane pliki", "*.bin");
+                fileChooser.setTitle("Wybierz skompresowany plik");
                 break;
             case "compressor":
                 chosenExtensionFilter = new ExtensionFilter("Wszystkie pliki", "*.*");
+                fileChooser.setTitle("Wybierz plik do kompresji");
             default:
                 chosenExtensionFilter = new ExtensionFilter("Wszystkie pliki", "*.*");
         }
